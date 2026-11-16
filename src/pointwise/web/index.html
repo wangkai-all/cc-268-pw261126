@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pointwise · 行级证据变换平台</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <strong>Pointwise</strong>
+    <span class="sub">数据变换 · 行级证据 · 可解释 · 可撤销</span>
+  </div>
+  <div class="versions">
+    <label>版本
+      <select id="versionSelect"></select>
+    </label>
+    <button id="releaseBtn" title="把所选不可变版本切换为 current">发布为当前版本</button>
+    <button id="rebuildBtn">重算</button>
+    <button id="gcBtn">清理旧版本</button>
+    <span id="health" class="pill">连接中…</span>
+  </div>
+</header>
+
+<main>
+<section class="panel" id="statsPanel">
+  <h2>证据规模与可解释范围</h2>
+  <div id="statsBody" class="stats-grid"><p>加载中…</p></div>
+  <h3>零值解释（冲销 / 本零 / 无数据）</h3>
+  <div id="zeroBody"></div>
+  <h3>证据完整性校验</h3>
+  <div id="verifyBody"></div>
+</section>
+
+<div class="columns">
+<section class="panel">
+  <h2>变换阶段与结果</h2>
+  <div class="toolbar">
+    <div class="stage-tabs" id="stageTabs"></div>
+  </div>
+  <div class="toolbar">
+    <select id="filterCol"></select>
+    <select id="filterOp">
+      <option value="contains">包含</option>
+      <option value="==">等于</option>
+      <option value="!=">不等于</option>
+      <option value=">">&gt;</option>
+      <option value="<">&lt;</option>
+    </select>
+    <input id="filterVal" placeholder="筛选值">
+    <button id="filterBtn">筛选</button>
+    <select id="groupBy"><option value="">不分组</option></select>
+    <button id="groupBtn">分组计数</button>
+    <button id="resetBtn">重置</button>
+  </div>
+  <div id="groupResult" class="group-box hidden"></div>
+  <div class="table-wrap">
+    <table id="rowsTable"><thead></thead><tbody></tbody></table>
+  </div>
+  <p class="hint">点击任意行的 rid 展开它由哪些原始行、经过哪些规则产生。</p>
+</section>
+
+<section class="panel">
+  <h2>行级证据</h2>
+  <div class="tabs">
+    <button data-tab="lineage" class="active">来源展开</button>
+    <button data-tab="drops">丢弃 / 未匹配记录</button>
+    <button data-tab="diff">版本对比</button>
+    <button data-tab="actions">撤销 / 恢复</button>
+  </div>
+
+  <div class="tabpane" id="tab-lineage">
+    <div id="lineageBody"><p class="muted">在左侧表格选择一行。</p></div>
+  </div>
+
+  <div class="tabpane hidden" id="tab-drops">
+    <div class="toolbar">
+      <input id="dropReason" placeholder="按原因关键字筛选">
+      <input id="dropRule" placeholder="按规则 id 筛选">
+      <button id="dropSearchBtn">查询丢弃记录</button>
+    </div>
+    <div id="dropsBody"></div>
+  </div>
+
+  <div class="tabpane hidden" id="tab-diff">
+    <div class="toolbar">
+      <select id="diffFrom"></select>
+      <select id="diffTo"></select>
+      <button id="diffBtn">对比</button>
+    </div>
+    <div id="diffBody"></div>
+  </div>
+
+  <div class="tabpane hidden" id="tab-actions">
+    <p class="muted">撤销一条来源记录会写入墓碑并原子发布一个新版本；旧版本完整保留，可随时恢复或切回。</p>
+    <div class="toolbar">
+      <input id="ridInput" placeholder="来源 rid，例如 orders#3">
+      <button id="retractBtn">撤销并重算</button>
+      <button id="restoreBtn">恢复并重算</button>
+    </div>
+    <div id="actionBody"></div>
+  </div>
+</section>
+</div>
+</main>
+
+<footer>
+  所有结果与证据均为不可变版本目录中的本地文件 · 每次请求只读取一个版本 · 无外部依赖
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

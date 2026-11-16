@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Convenience wrapper so the CLI runs without installation.
+set -euo pipefail
+cd "$(dirname "$0")"
+PYTHONPATH=src exec python3 -m pointwise.cli "$@"

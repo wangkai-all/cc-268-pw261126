@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pointwise-evidence"
+version = "1.0.0"
+description = "Executable data transformations with row-level evidence, retraction and immutable versions"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+pw = "pointwise.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
